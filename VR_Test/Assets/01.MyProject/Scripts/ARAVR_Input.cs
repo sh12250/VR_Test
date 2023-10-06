@@ -2,73 +2,77 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//! ÀÌ°ÍÀº Doxygen ÀÌ ÀÎ½ÄÇÏ´Â ÇÑ ÁÙ ÁÖ¼®
-//! ARAVR_Input Å¬·¡½º´Â AR/VR ¿¡ ´ëÀÀÇÏ´Â Input ±â´ÉÀ» ±¸ÇöÇÏ´Â Å¬·¡½ºÀÌ´Ù
+//! ì´ê²ƒì€ Doxygen ì´ ì¸ì‹í•˜ëŠ” í•œ ì¤„ ì£¼ì„
+//! ARAVR_Input í´ë˜ìŠ¤ëŠ” AR/VR ì— ëŒ€ì‘í•˜ëŠ” Input ê¸°ëŠ¥ì„ êµ¬í˜„í•˜ëŠ” í´ë˜ìŠ¤ì´ë‹¤
 public static class ARAVR_Input
 {
-    //! ´Ù¾çÇÑ ±â±â¿¡¼­ »ç¿ëÇÒ ¹öÆ°ÀÇ Á¾·ù¸¦ ¹Ì¸® Á¤ÀÇÇØµĞ °ÍÀÌ´Ù
-    #region EnumType
-#if BUILD_PLATFORM_PC || UNITY_STANDALONE // #if ´Â && || ¿¬»ê °¡´É
+    //! ë‹¤ì–‘í•œ ê¸°ê¸°ì—ì„œ ì‚¬ìš©í•  ë²„íŠ¼ì˜ ì¢…ë¥˜ë¥¼ ë¯¸ë¦¬ ì •ì˜í•´ë‘” ê²ƒì´ë‹¤
+#if BUILD_PLATFORM_PC || UNITY_STANDALONE // #if ëŠ” && || ì—°ì‚° ê°€ëŠ¥
     public enum ButtonTarget
     {
-        Fire1,      /**< ¹ß»ç ¹öÆ° 1¹øÀÌ´Ù. */
-        Fire2,      /**< ¹ß»ç ¹öÆ° 2¹øÀÌ´Ù. */
-        Fire3,      /**< ¹ß»ç ¹öÆ° 3¹øÀÌ´Ù. */
-        Jump        /**< Á¡ÇÁ ¹öÆ°ÀÌ´Ù. */
+        Fire1,      /**< ë°œì‚¬ ë²„íŠ¼ 1ë²ˆì´ë‹¤. */
+        Fire2,      /**< ë°œì‚¬ ë²„íŠ¼ 2ë²ˆì´ë‹¤. */
+        Fire3,      /**< ë°œì‚¬ ë²„íŠ¼ 3ë²ˆì´ë‹¤. */
+        Jump        /**< ì í”„ ë²„íŠ¼ì´ë‹¤. */
     }
 #endif
 
-    //! ¹Ì¸® Á¤ÀÇÇØ³õÀº ¹öÆ°À» ±â±âº°·Î ´Ù¸£°Ô ¸ÅÇÎÇØµĞ °ÍÀÌ´Ù.
-    public enum Button 
+    //! ë¯¸ë¦¬ ì •ì˜í•´ë†“ì€ ë²„íŠ¼ì„ ê¸°ê¸°ë³„ë¡œ ë‹¤ë¥´ê²Œ ë§¤í•‘í•´ë‘” ê²ƒì´ë‹¤.
+    public enum Button
     {
-#if BUILD_PLATFORM_PC || UNITY_STANDALONE // PC BUILD ¸¦ À§ÇÑ custom ÀüÃ³¸®±â, À¯´ÏÆ¼ Á¦°ø ÀüÃ³¸®±â
-        One = ButtonTarget.Fire1,               /**< ¹ß»ç ¹öÆ° 1 À» ¸ÅÇÎ */
-        Two = ButtonTarget.Jump,                /**< Á¡ÇÁ ¹öÆ°À» ¸ÅÇÎ */
-        Thumbstick = ButtonTarget.Fire1,        /**< ¹ß»ç ¹öÆ° 1À» ¸ÅÇÎ */
-        IndexTrigger = ButtonTarget.Fire3,      /**< ¹ß»ç ¹öÆ° 3À» ¸ÅÇÎ */
-        HandTrigger = ButtonTarget.Fire2        /**< ¹ß»ç ¹öÆ° 2À» ¸ÅÇÎ */
+#if BUILD_PLATFORM_PC || UNITY_STANDALONE // PC BUILD ë¥¼ ìœ„í•œ custom ì „ì²˜ë¦¬ê¸°, ìœ ë‹ˆí‹° ì œê³µ ì „ì²˜ë¦¬ê¸°
+        One = ButtonTarget.Fire1,               /**< ë°œì‚¬ ë²„íŠ¼ 1 ì„ ë§¤í•‘ */
+        Two = ButtonTarget.Jump,                /**< ì í”„ ë²„íŠ¼ì„ ë§¤í•‘ */
+        Thumbstick = ButtonTarget.Fire1,        /**< ë°œì‚¬ ë²„íŠ¼ 1ì„ ë§¤í•‘ */
+        IndexTrigger = ButtonTarget.Fire3,      /**< ë°œì‚¬ ë²„íŠ¼ 3ì„ ë§¤í•‘ */
+        HandTrigger = ButtonTarget.Fire2        /**< ë°œì‚¬ ë²„íŠ¼ 2ì„ ë§¤í•‘ */
+#elif TARGET_DEVICE_OCULUS
+        One = OVRInput.Button.One,                          /**< VR ì»¨íŠ¸ë¡¤ëŸ¬ì˜ One ë²„íŠ¼ì„ ë§¤í•‘ */
+        Two = OVRInput.Button.Two,                          /**< VR ì»¨íŠ¸ë¡¤ëŸ¬ì˜ Two ë²„íŠ¼ì„ ë§¤í•‘ */
+        Thumbstick = OVRInput.Button.PrimaryThumbstick,     /**< VR ì»¨íŠ¸ë¡¤ëŸ¬ì˜ ì¡°ì´ìŠ¤í‹± ë²„íŠ¼ì„ ë§¤í•‘ */
+        IndexTrigger = OVRInput.Button.PrimaryIndexTrigger, /**< VR ì»¨íŠ¸ë¡¤ëŸ¬ì˜ IndexTrigger ë²„íŠ¼ì„ ë§¤í•‘ */
+        HandTrigger = OVRInput.Button.PrimaryHandTrigger,   /**< VR ì»¨íŠ¸ë¡¤ëŸ¬ì˜ HandTrigger ë²„íŠ¼ì„ ë§¤í•‘ */
 #endif
     }
 
-    //! ±â±âº°·Î ´Ù¸¥ ÄÁÆ®·Ñ·¯¸¦ ¹Ì¸® Á¤ÀÇÇØµĞ °ÍÀÌ´Ù
-    public enum Controller 
+    //! ê¸°ê¸°ë³„ë¡œ ë‹¤ë¥¸ ì»¨íŠ¸ë¡¤ëŸ¬ë¥¼ ë¯¸ë¦¬ ì •ì˜í•´ë‘” ê²ƒì´ë‹¤
+    public enum Controller
     {
 #if BUILD_PLATFORM_PC || UNITY_STANDALONE 
-        LTouch,     /**< ¿ŞÂÊ ÄÁÆ®·Ñ·¯ */
-        RTouch      /**< ¿À¸¥ÂÊ ÄÁÆ®·Ñ·¯ */
+        LTouch,     /**< ì™¼ìª½ ì»¨íŠ¸ë¡¤ëŸ¬ */
+        RTouch      /**< ì˜¤ë¥¸ìª½ ì»¨íŠ¸ë¡¤ëŸ¬ */
+#elif TARGET_DEVICE_OCULUS
+        LTouch = OVRInput.Controller.LTouch,    /**< VR ì™¼ìª½ ì»¨íŠ¸ë¡¤ëŸ¬ */
+        RTouch = OVRInput.Controller.RTouch,    /**< VR ì˜¤ë¥¸ìª½ ì»¨íŠ¸ë¡¤ëŸ¬ */
 #endif
     }
-    #endregion
 
 
-    #region º¯¼ö
-#if BUILD_PLATFORM_PC || UNITY_STANDALONE
-    /**< Å©·Î½ºÇì¾î ±×¸± ¶§ ±âÁ¸ ½ºÄÉÀÏÀ» Ä³½ÌÇÏ´Â º¯¼ö */
-    private static Vector3 originalScale = Vector3.one * 0.02f;
+#if BUILD_PLATFORM_PC
+    private static Vector3 originalScale = Vector3.one * 0.02f;     /**< í¬ë¡œìŠ¤í—¤ì–´ ê·¸ë¦´ ë•Œ ê¸°ì¡´ ìŠ¤ì¼€ì¼ì„ ìºì‹±í•˜ëŠ” ë³€ìˆ˜ */
+#else
+    private static Vector3 originalScale = Vector3.one * 0.005f;    /**< í¬ë¡œìŠ¤í—¤ì–´ ê·¸ë¦´ ë•Œ ê¸°ì¡´ ìŠ¤ì¼€ì¼ì„ ìºì‹±í•˜ëŠ” ë³€ìˆ˜ */
 #endif
 
 #if TARGET_DEVICE_OCULUS
-    /**< VR ¿¡¼­ »ç¿ëÇÒ Ä«¸Ş¶ó¸¦ ±âÁØÀ¸·Î ¿¬»êÇÑ Tracking Space ÀÇ ±âÁØÀÌ µÇ´Â º¯¼ö */
-    private static Transform rootTransform;
+    private static Transform rootTransform;    /**< VR ì—ì„œ ì‚¬ìš©í•  ì¹´ë©”ë¼ë¥¼ ê¸°ì¤€ìœ¼ë¡œ ì—°ì‚°í•œ Tracking Space ì˜ ê¸°ì¤€ì´ ë˜ëŠ” ë³€ìˆ˜ */
 #endif
-    #endregion
 
 
     /**
-     * @brief ¿À¸¥ÂÊ ÄÁÆ®·Ñ·¯ÀÇ À§Ä¡¸¦ ¾ò¾î¿À´Â ÇÁ·ÎÆÛÆ¼ÀÌ´Ù
-     * @return ½ºÅ©¸° ÁÂÇ¥¸¦ ¾ò¾î¼­ ¿ùµåÁÂÇ¥·Î º¯È¯ÇÑ °ªÀ» ¸®ÅÏÇÑ´Ù
+     * @brief ì˜¤ë¥¸ìª½ ì»¨íŠ¸ë¡¤ëŸ¬ì˜ ìœ„ì¹˜ë¥¼ ì–»ì–´ì˜¤ëŠ” í”„ë¡œí¼í‹°ì´ë‹¤
+     * @return ìŠ¤í¬ë¦° ì¢Œí‘œë¥¼ ì–»ì–´ì„œ ì›”ë“œì¢Œí‘œë¡œ ë³€í™˜í•œ ê°’ì„ ë¦¬í„´í•œë‹¤
      */
-    #region ¿À¸¥ÂÊ ÄÁÆ®·Ñ·¯ À§Ä¡
     public static Vector3 RHandPosition
     {
         get
         {
-#if BUILD_PLATFORM_PC || UNITY_STANDALONE // #if ´Â && || ¿¬»ê °¡´É
-            // ¸¶¿ì½º ½ºÅ©¸° ÁÂÇ¥ ¾ò¾î¿À±â
+#if BUILD_PLATFORM_PC
+            // ë§ˆìš°ìŠ¤ ìŠ¤í¬ë¦° ì¢Œí‘œ ì–»ì–´ì˜¤ê¸°
             Vector3 pos = Input.mousePosition;
-            // z °ªÀº 0.7 m ·Î ¼³Á¤
+            // z ê°’ì€ 0.7 m ë¡œ ì„¤ì •
             pos.z = 0.7f;
-            // ½ºÅ©¸° ÁÂÇ¥¸¦ ¿ùµå ÁÂÇ¥·Î º¯È¯
+            // ìŠ¤í¬ë¦° ì¢Œí‘œë¥¼ ì›”ë“œ ì¢Œí‘œë¡œ ë³€í™˜
             pos = Camera.main.ScreenToWorldPoint(pos);
             RHand.position = pos;
 #elif TARGET_DEVICE_OCULUS
@@ -80,19 +84,16 @@ public static class ARAVR_Input
             return pos;
         }
     }
-#endregion
-
 
     /**
-     * @brief ¿À¸¥ÂÊ ÄÁÆ®·Ñ·¯ÀÇ ¹æÇâÀ» ¾ò¾î¿À´Â ÇÁ·ÎÆÛÆ¼ÀÌ´Ù
-     * @return Ä«¸Ş¶ó¸¦ ±âÁØÀ¸·Î ÄÁÆ®·Ñ·¯ÀÇ Á¤¸é ¹æÇâÀ» ¿¬»êÇØ¼­ ¸®ÅÏÇÑ´Ù
+     * @brief ì˜¤ë¥¸ìª½ ì»¨íŠ¸ë¡¤ëŸ¬ì˜ ë°©í–¥ì„ ì–»ì–´ì˜¤ëŠ” í”„ë¡œí¼í‹°ì´ë‹¤
+     * @return ì¹´ë©”ë¼ë¥¼ ê¸°ì¤€ìœ¼ë¡œ ì»¨íŠ¸ë¡¤ëŸ¬ì˜ ì •ë©´ ë°©í–¥ì„ ì—°ì‚°í•´ì„œ ë¦¬í„´í•œë‹¤
      */
-    #region ¿À¸¥ÂÊ ÄÁÆ®·Ñ·¯ ¹æÇâ
-    public static Vector3 RHandDirection    
+    public static Vector3 RHandDirection
     {
-        get 
+        get
         {
-#if BUILD_PLATFORM_PC || UNITY_STANDALONE // #if ´Â && || ¿¬»ê °¡´É
+#if BUILD_PLATFORM_PC
             Vector3 direction = RHandPosition - Camera.main.transform.position;
             RHand.forward = direction;
 #elif TARGET_DEVICE_OCULUS
@@ -105,24 +106,21 @@ public static class ARAVR_Input
             return direction;
         }
     }
-    #endregion
-
 
     /**
-     * @brief ¿ŞÂÊ ÄÁÆ®·Ñ·¯ÀÇ À§Ä¡¸¦ ¾ò¾î¿À´Â ÇÁ·ÎÆÛÆ¼ÀÌ´Ù
-     * @return ½ºÅ©¸° ÁÂÇ¥¸¦ ¾ò¾î¼­ ¿ùµåÁÂÇ¥·Î º¯È¯ÇÑ °ªÀ» ¸®ÅÏÇÑ´Ù
+     * @brief ì™¼ìª½ ì»¨íŠ¸ë¡¤ëŸ¬ì˜ ìœ„ì¹˜ë¥¼ ì–»ì–´ì˜¤ëŠ” í”„ë¡œí¼í‹°ì´ë‹¤
+     * @return ìŠ¤í¬ë¦° ì¢Œí‘œë¥¼ ì–»ì–´ì„œ ì›”ë“œì¢Œí‘œë¡œ ë³€í™˜í•œ ê°’ì„ ë¦¬í„´í•œë‹¤
      */
-    #region ¿ŞÂÊ ÄÁÆ®·Ñ·¯ À§Ä¡
     public static Vector3 LHandPosition
     {
         get
         {
-#if BUILD_PLATFORM_PC || UNITY_STANDALONE // #if ´Â && || ¿¬»ê °¡´É
-            // ¸¶¿ì½º ½ºÅ©¸° ÁÂÇ¥ ¾ò¾î¿À±â
+#if BUILD_PLATFORM_PC
+            // ë§ˆìš°ìŠ¤ ìŠ¤í¬ë¦° ì¢Œí‘œ ì–»ì–´ì˜¤ê¸°
             Vector3 pos = Input.mousePosition;
-            // z °ªÀº 0.7 m ·Î ¼³Á¤
+            // z ê°’ì€ 0.7 m ë¡œ ì„¤ì •
             pos.z = 0.7f;
-            // ½ºÅ©¸° ÁÂÇ¥¸¦ ¿ùµå ÁÂÇ¥·Î º¯È¯
+            // ìŠ¤í¬ë¦° ì¢Œí‘œë¥¼ ì›”ë“œ ì¢Œí‘œë¡œ ë³€í™˜
             pos = Camera.main.ScreenToWorldPoint(pos);
             LHand.position = pos;
 #elif TARGET_DEVICE_OCULUS
@@ -134,19 +132,16 @@ public static class ARAVR_Input
             return pos;
         }
     }
-    #endregion
-
 
     /**
-     * @brief ¿ŞÂÊ ÄÁÆ®·Ñ·¯ÀÇ ¹æÇâÀ» ¾ò¾î¿À´Â ÇÁ·ÎÆÛÆ¼ÀÌ´Ù
-     * @return Ä«¸Ş¶ó¸¦ ±âÁØÀ¸·Î ÄÁÆ®·Ñ·¯ÀÇ Á¤¸é ¹æÇâÀ» ¿¬»êÇØ¼­ ¸®ÅÏÇÑ´Ù
+     * @brief ì™¼ìª½ ì»¨íŠ¸ë¡¤ëŸ¬ì˜ ë°©í–¥ì„ ì–»ì–´ì˜¤ëŠ” í”„ë¡œí¼í‹°ì´ë‹¤
+     * @return ì¹´ë©”ë¼ë¥¼ ê¸°ì¤€ìœ¼ë¡œ ì»¨íŠ¸ë¡¤ëŸ¬ì˜ ì •ë©´ ë°©í–¥ì„ ì—°ì‚°í•´ì„œ ë¦¬í„´í•œë‹¤
      */
-    #region ¿ŞÂÊ ÄÁÆ®·Ñ·¯ ¹æÇâ
     public static Vector3 LHandDirection
     {
         get
         {
-#if BUILD_PLATFORM_PC || UNITY_STANDALONE // #if ´Â && || ¿¬»ê °¡´É
+#if BUILD_PLATFORM_PC
             Vector3 direction = LHandPosition - Camera.main.transform.position;
             LHand.forward = direction;
 #elif TARGET_DEVICE_OCULUS
@@ -159,14 +154,11 @@ public static class ARAVR_Input
             return direction;
         }
     }
-    #endregion
 
-
-    #region Scene ¿¡ µî·ÏµÈ ¿À¸¥ÂÊ ÄÁÆ®·Ñ·¯ Ã£¾Æ ¹İÈ¯
-    private static Transform rHand; /**< Scene ¿¡ µî·ÏµÈ ¿À¸¥ÂÊ ÄÁÆ®·Ñ·¯¸¦ Ä³½ÌÇÏ´Â º¯¼ö */
+    private static Transform rHand; /**< Scene ì— ë“±ë¡ëœ ì˜¤ë¥¸ìª½ ì»¨íŠ¸ë¡¤ëŸ¬ë¥¼ ìºì‹±í•˜ëŠ” ë³€ìˆ˜ */
     /**
-     * @brief Scene ¿¡ µî·ÏµÈ ¿À¸¥ÂÊ ÄÁÆ®·Ñ·¯¸¦ Ã£¾Æ ¹İÈ¯ÇÏ´Â ÇÁ·ÎÆÛÆ¼ÀÌ´Ù
-     * @return ¿À¸¥ÂÊ ÄÁÆ®·Ñ·¯ÀÇ Transform À» ¸®ÅÏÇÑ´Ù
+     * @brief Scene ì— ë“±ë¡ëœ ì˜¤ë¥¸ìª½ ì»¨íŠ¸ë¡¤ëŸ¬ë¥¼ ì°¾ì•„ ë°˜í™˜í•˜ëŠ” í”„ë¡œí¼í‹°ì´ë‹¤
+     * @return ì˜¤ë¥¸ìª½ ì»¨íŠ¸ë¡¤ëŸ¬ì˜ Transform ì„ ë¦¬í„´í•œë‹¤
      */
     public static Transform RHand
     {
@@ -174,12 +166,12 @@ public static class ARAVR_Input
         {
             if (lHand == null)
             {
-#if BUILD_PLATFORM_PC || UNITY_STANDALONE // #if ´Â && || ¿¬»ê °¡´É
-                // RHand ¶ó´Â ÀÌ¸§À¸·Î °ÔÀÓ ¿ÀºêÁ§ºz¸¦ ¸¸µç´Ù.
+#if BUILD_PLATFORM_PC
+                // RHand ë¼ëŠ” ì´ë¦„ìœ¼ë¡œ ê²Œì„ ì˜¤ë¸Œì í‹‘ë¥¼ ë§Œë“ ë‹¤.
                 GameObject handObj = new GameObject("RHand");
-                // ¸¸µé¾îÁø °´Ã¼ÀÇ Æ®·£½ºÆùÀ» rHand º¯¼ö¿¡ ÇÒ´çÇÑ´Ù.
+                // ë§Œë“¤ì–´ì§„ ê°ì²´ì˜ íŠ¸ëœìŠ¤í°ì„ rHand ë³€ìˆ˜ì— í• ë‹¹í•œë‹¤.
                 rHand = handObj.transform;
-                // ÄÁÆ®·Ñ·¯¸¦ Ä«¸Ş¶óÀÇ ÀÚ½Ä °´Ã¼·Î µî·ÏÇÑ´Ù.
+                // ì»¨íŠ¸ë¡¤ëŸ¬ë¥¼ ì¹´ë©”ë¼ì˜ ìì‹ ê°ì²´ë¡œ ë“±ë¡í•œë‹¤.
                 rHand.parent = Camera.main.transform;
 #elif TARGET_DEVICE_OCULUS
                 rHand = GameObject.Find("RightControllerAnchor").transform;
@@ -188,27 +180,24 @@ public static class ARAVR_Input
             return rHand;
         }
     }
-    #endregion
 
-
-    #region Scene ¿¡ µî·ÏµÈ ¿ŞÂÊ ÄÁÆ®·Ñ·¯ Ã£¾Æ ¹İÈ¯
-    private static Transform lHand; /**< Scene ¿¡ µî·ÏµÈ ¿ŞÂÊ ÄÁÆ®·Ñ·¯¸¦ Ä³½ÌÇÏ´Â º¯¼ö */
+    private static Transform lHand; /**< Scene ì— ë“±ë¡ëœ ì™¼ìª½ ì»¨íŠ¸ë¡¤ëŸ¬ë¥¼ ìºì‹±í•˜ëŠ” ë³€ìˆ˜ */
     /**
-     * @brief Scene ¿¡ µî·ÏµÈ ¿ŞÂÊ ÄÁÆ®·Ñ·¯¸¦ Ã£¾Æ ¹İÈ¯ÇÏ´Â ÇÁ·ÎÆÛÆ¼ÀÌ´Ù
-     * @return ¿ŞÂÊ ÄÁÆ®·Ñ·¯ÀÇ Transform À» ¸®ÅÏÇÑ´Ù
+     * @brief Scene ì— ë“±ë¡ëœ ì™¼ìª½ ì»¨íŠ¸ë¡¤ëŸ¬ë¥¼ ì°¾ì•„ ë°˜í™˜í•˜ëŠ” í”„ë¡œí¼í‹°ì´ë‹¤
+     * @return ì™¼ìª½ ì»¨íŠ¸ë¡¤ëŸ¬ì˜ Transform ì„ ë¦¬í„´í•œë‹¤
      */
     public static Transform LHand
     {
         get
         {
-            if(lHand == null) 
+            if (lHand == null)
             {
-#if BUILD_PLATFORM_PC || UNITY_STANDALONE // #if ´Â && || ¿¬»ê °¡´É
-                // LHand ¶ó´Â ÀÌ¸§À¸·Î °ÔÀÓ ¿ÀºêÁ§ºz¸¦ ¸¸µç´Ù.
+#if BUILD_PLATFORM_PC
+                // LHand ë¼ëŠ” ì´ë¦„ìœ¼ë¡œ ê²Œì„ ì˜¤ë¸Œì í‹‘ë¥¼ ë§Œë“ ë‹¤.
                 GameObject handObj = new GameObject("LHand");
-                // ¸¸µé¾îÁø °´Ã¼ÀÇ Æ®·£½ºÆùÀ» lHand º¯¼ö¿¡ ÇÒ´çÇÑ´Ù.
+                // ë§Œë“¤ì–´ì§„ ê°ì²´ì˜ íŠ¸ëœìŠ¤í°ì„ lHand ë³€ìˆ˜ì— í• ë‹¹í•œë‹¤.
                 lHand = handObj.transform;
-                // ÄÁÆ®·Ñ·¯¸¦ Ä«¸Ş¶óÀÇ ÀÚ½Ä °´Ã¼·Î µî·ÏÇÑ´Ù.
+                // ì»¨íŠ¸ë¡¤ëŸ¬ë¥¼ ì¹´ë©”ë¼ì˜ ìì‹ ê°ì²´ë¡œ ë“±ë¡í•œë‹¤.
                 lHand.parent = Camera.main.transform;
 #elif TARGET_DEVICE_OCULUS
                 lHand = GameObject.Find("LeftControllerAnchor").transform;
@@ -217,153 +206,155 @@ public static class ARAVR_Input
             return lHand;
         }
     }
-    #endregion
 
 
-    #region ÄÁÆ®·Ñ·¯ÀÇ Æ¯Á¤ ¹öÆ°À» ´©¸£°í ÀÖ´Â µ¿¾È true ¸¦ ¹İÈ¯
     /**
-     * @brief ÄÁÆ®·Ñ·¯ÀÇ Æ¯Á¤ ¹öÆ°À» ´©¸£°í ÀÖ´Â µ¿¾È true ¸¦ ¹İÈ¯ÇÏ´Â ÇÔ¼ö
-     * @param virtualMask : ¹Ì¸® Á¤ÀÇµÈ ¹öÆ°ÀÇ Á¾·ù¸¦ ¹Ş¾Æ¿Â´Ù
-     * @param hand : ¾î´À ÄÁÆ®·Ñ·¯ÀÇ ¹öÆ°À» ´©¸¦ °ÍÀÎÁö ¹Ş¾Æ¿Â´Ù
-     * @return virtualMask ¿¡ µé¾î¿Â °ªÀ» ButtonTarget Å¸ÀÔÀ¸·Î º¯È¯ÇØ¼­ ¸®ÅÏÇÑ´Ù
+     * @brief ì»¨íŠ¸ë¡¤ëŸ¬ì˜ íŠ¹ì • ë²„íŠ¼ì„ ëˆ„ë¥´ê³  ìˆëŠ” ë™ì•ˆ true ë¥¼ ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜
+     * @param virtualMask ë¯¸ë¦¬ ì •ì˜ëœ ë²„íŠ¼ì˜ ì¢…ë¥˜ë¥¼ ë°›ì•„ì˜¨ë‹¤
+     * @param hand ì–´ëŠ ì»¨íŠ¸ë¡¤ëŸ¬ì˜ ë²„íŠ¼ì„ ëˆ„ë¥¼ ê²ƒì¸ì§€ ë°›ì•„ì˜¨ë‹¤
+     * @return virtualMask ì— ë“¤ì–´ì˜¨ ê°’ì„ ButtonTarget íƒ€ì…ìœ¼ë¡œ ë³€í™˜í•´ì„œ ë¦¬í„´í•œë‹¤
      */
-    public static bool Get(Button virtualMask, Controller hand = Controller.RTouch) 
+    public static bool Get(Button virtualMask, Controller hand = Controller.RTouch)
     {
-#if BUILD_PLATFORM_PC || UNITY_STANDALONE // #if ´Â && || ¿¬»ê °¡´É
-        // virtualMask ¿¡ µé¾î¿Â °ªÀ» ButtonTarget Å¸ÀÔÀ¸·Î º¯È¯ÇØ¼­ Àü´ŞÇÑ´Ù
+#if BUILD_PLATFORM_PC
+        // virtualMask ì— ë“¤ì–´ì˜¨ ê°’ì„ ButtonTarget íƒ€ì…ìœ¼ë¡œ ë³€í™˜í•´ì„œ ì „ë‹¬í•œë‹¤
         return Input.GetButton(((ButtonTarget)virtualMask).ToString());
+#elif TARGET_DEVICE_OCULUS
+        return OVRInput.Get((OVRInput.Button)virtualMask, (OVRInput.Controller)hand);
 #else
         return false;
 #endif
     }
-    #endregion
 
-
-    #region ÄÁÆ®·Ñ·¯ÀÇ Æ¯Á¤ ¹öÆ°À» ´­·¶À» ¶§ true ¸¦ ¹İÈ¯
     /**
-     * @brief ÄÁÆ®·Ñ·¯ÀÇ Æ¯Á¤ ¹öÆ°À» ´­·¶À» ¶§ true ¸¦ ¹İÈ¯ÇÏ´Â ÇÔ¼ö
-     * @param virtualMask : ¹Ì¸® Á¤ÀÇµÈ ¹öÆ°ÀÇ Á¾·ù¸¦ ¹Ş¾Æ¿Â´Ù
-     * @param hand : ¾î´À ÄÁÆ®·Ñ·¯ÀÇ ¹öÆ°À» ´©¸¦ °ÍÀÎÁö ¹Ş¾Æ¿Â´Ù
-     * @return virtualMask ¿¡ µé¾î¿Â °ªÀ» ButtonTarget Å¸ÀÔÀ¸·Î º¯È¯ÇØ¼­ ¸®ÅÏÇÑ´Ù
+     * @brief ì»¨íŠ¸ë¡¤ëŸ¬ì˜ íŠ¹ì • ë²„íŠ¼ì„ ëˆŒë €ì„ ë•Œ true ë¥¼ ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜
+     * @param virtualMask ë¯¸ë¦¬ ì •ì˜ëœ ë²„íŠ¼ì˜ ì¢…ë¥˜ë¥¼ ë°›ì•„ì˜¨ë‹¤
+     * @param hand ì–´ëŠ ì»¨íŠ¸ë¡¤ëŸ¬ì˜ ë²„íŠ¼ì„ ëˆ„ë¥¼ ê²ƒì¸ì§€ ë°›ì•„ì˜¨ë‹¤
+     * @return virtualMask ì— ë“¤ì–´ì˜¨ ê°’ì„ ButtonTarget íƒ€ì…ìœ¼ë¡œ ë³€í™˜í•´ì„œ ë¦¬í„´í•œë‹¤
      */
-    public static bool GetDown(Button virtualMask, Controller hand = Controller.RTouch) 
+    public static bool GetDown(Button virtualMask, Controller hand = Controller.RTouch)
     {
-#if BUILD_PLATFORM_PC || UNITY_STANDALONE // #if ´Â && || ¿¬»ê °¡´É
-        // virtualMask ¿¡ µé¾î¿Â °ªÀ» ButtonTarget Å¸ÀÔÀ¸·Î º¯È¯ÇØ¼­ Àü´ŞÇÑ´Ù
+#if BUILD_PLATFORM_PC
+        // virtualMask ì— ë“¤ì–´ì˜¨ ê°’ì„ ButtonTarget íƒ€ì…ìœ¼ë¡œ ë³€í™˜í•´ì„œ ì „ë‹¬í•œë‹¤
         return Input.GetButtonDown(((ButtonTarget)virtualMask).ToString());
+#elif TARGET_DEVICE_OCULUS
+        return OVRInput.GetDown((OVRInput.Button)virtualMask, (OVRInput.Controller)hand);
 #else
         return false;
 #endif
     }
-    #endregion
 
-
-    #region ÄÁÆ®·Ñ·¯ÀÇ Æ¯Á¤ ¹öÆ°À» ´­·¶´Ù ¶§¾úÀ» ¶§ true ¸¦ ¹İÈ¯
     /**
-     * @brief ÄÁÆ®·Ñ·¯ÀÇ Æ¯Á¤ ¹öÆ°À» ´­·¶´Ù ¶§¾úÀ» ¶§ true ¸¦ ¹İÈ¯ÇÏ´Â ÇÔ¼ö
-     * @param virtualMask : ¹Ì¸® Á¤ÀÇµÈ ¹öÆ°ÀÇ Á¾·ù¸¦ ¹Ş¾Æ¿Â´Ù
-     * @param hand : ¾î´À ÄÁÆ®·Ñ·¯ÀÇ ¹öÆ°À» ´©¸¦ °ÍÀÎÁö ¹Ş¾Æ¿Â´Ù
-     * @return virtualMask ¿¡ µé¾î¿Â °ªÀ» ButtonTarget Å¸ÀÔÀ¸·Î º¯È¯ÇØ¼­ ¸®ÅÏÇÑ´Ù
+     * @brief ì»¨íŠ¸ë¡¤ëŸ¬ì˜ íŠ¹ì • ë²„íŠ¼ì„ ëˆŒë €ë‹¤ ë•Œì—ˆì„ ë•Œ true ë¥¼ ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜
+     * @param virtualMask ë¯¸ë¦¬ ì •ì˜ëœ ë²„íŠ¼ì˜ ì¢…ë¥˜ë¥¼ ë°›ì•„ì˜¨ë‹¤
+     * @param hand ì–´ëŠ ì»¨íŠ¸ë¡¤ëŸ¬ì˜ ë²„íŠ¼ì„ ëˆ„ë¥¼ ê²ƒì¸ì§€ ë°›ì•„ì˜¨ë‹¤
+     * @return virtualMask ì— ë“¤ì–´ì˜¨ ê°’ì„ ButtonTarget íƒ€ì…ìœ¼ë¡œ ë³€í™˜í•´ì„œ ë¦¬í„´í•œë‹¤
       */
     public static bool GetUp(Button virtualMask, Controller hand = Controller.RTouch)
     {
-#if BUILD_PLATFORM_PC || UNITY_STANDALONE // #if ´Â && || ¿¬»ê °¡´É
-        // virtualMask ¿¡ µé¾î¿Â °ªÀ» ButtonTarget Å¸ÀÔÀ¸·Î º¯È¯ÇØ¼­ Àü´ŞÇÑ´Ù
+#if BUILD_PLATFORM_PC 
+        // virtualMask ì— ë“¤ì–´ì˜¨ ê°’ì„ ButtonTarget íƒ€ì…ìœ¼ë¡œ ë³€í™˜í•´ì„œ ì „ë‹¬í•œë‹¤
         return Input.GetButtonUp(((ButtonTarget)virtualMask).ToString());
+#elif TARGET_DEVICE_OCULUS
+        return OVRInput.GetUp((OVRInput.Button)virtualMask, (OVRInput.Controller)hand);
 #else
         return false;
 #endif
     }
-    #endregion
 
-
-    #region ÄÁÆ®·Ñ·¯ÀÇ Axis ÀÔ·ÂÀ» ¹İÈ¯
     /**
-     * @brief ÄÁÆ®·Ñ·¯ÀÇ Axis ÀÔ·ÂÀ» ¹İÈ¯ÇÏ´Â ÇÔ¼ö
-     * @param axis : Horizontal, Vertical °ªÀ» ¹Ş¾Æ¿Â´Ù
-     * @param hand : ¾î´À ÄÁÆ®·Ñ·¯ÀÇ ¹öÆ°À» ´©¸¦ °ÍÀÎÁö ¹Ş¾Æ¿Â´Ù
-     * @return ÄÁÆ®·Ñ·¯ÀÇ Axis ÀÔ·ÂÀ» ½Ç¼ö ÇüÅÂ·Î ¸®ÅÏÇÑ´Ù
+     * @brief ì»¨íŠ¸ë¡¤ëŸ¬ì˜ Axis ì…ë ¥ì„ ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜
+     * @param axis Horizontal, Vertical ê°’ì„ ë°›ì•„ì˜¨ë‹¤
+     * @param hand ì–´ëŠ ì»¨íŠ¸ë¡¤ëŸ¬ì˜ ë²„íŠ¼ì„ ëˆ„ë¥¼ ê²ƒì¸ì§€ ë°›ì•„ì˜¨ë‹¤
+     * @return ì»¨íŠ¸ë¡¤ëŸ¬ì˜ Axis ì…ë ¥ì„ ì‹¤ìˆ˜ í˜•íƒœë¡œ ë¦¬í„´í•œë‹¤
      */
-    public static float GetAxis(string axis, Controller hand = Controller.LTouch) 
+    public static float GetAxis(string axis, Controller hand = Controller.LTouch)
     {
-#if BUILD_PLATFORM_PC || UNITY_STANDALONE // #if ´Â && || ¿¬»ê °¡´É
+#if BUILD_PLATFORM_PC 
         return Input.GetAxis(axis);
+#elif TARGET_DEVICE_OCULUS
+        if (axis == "Horizontal")
+        {
+            return OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, (OVRInput.Controller)hand).x;
+        }       // if: axisê°€ ìˆ˜í‰ì¼ ë•Œ
+        else
+        {
+            return OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, (OVRInput.Controller)hand).y;
+        }       // else: axisê°€ ìˆ˜ì§ì¼ ë•Œ
 #else
         return default;
 #endif
     }
-    #endregion
 
-
-    #region ÄÁÆ®·Ñ·¯¿¡ Áøµ¿ È£ÃâÇÏ±â
-    public static void PlayVibration(Controller hand) 
-    {
-        
-    }
-    #endregion
-
-
-    #region Ä«¸Ş¶ó°¡ ¹Ù¶óº¸´Â ¹æÇâÀ» ±âÁØÀ¸·Î ¼¾ÅÍ¸¦ Àâ´Â´Ù
+    /**
+     * @brief VR ì¹´ë©”ë¼ê°€ ë°”ë¼ë³´ëŠ” ë°©í–¥ì„ ê¸°ì¤€ìœ¼ë¡œ ì„¼í„°ë¥¼ ì¡ëŠ”ë‹¤
+     * @see 
+     */
     public static void Recenter()
     {
-
+#if TARGET_DEVICE_OCULUS
+        OVRManager.display.RecenterPose();
+#endif
     }
-    #endregion
 
-
-    #region Å¸°ÙÀÌ ¹Ù¶óº¸´Â ¹æÇâÀ» ±âÁØÀ¸·Î ¼¾ÅÍ¸¦ Àâ´Â´Ù
     /**
-     * @brief Å¸°ÙÀÌ ¹Ù¶óº¸´Â ¹æÇâÀ» ±âÁØÀ¸·Î ¼¾ÅÍ¸¦ Àâ´Â´Ù
-     * @param target : ¹Ù¶óº¸´Â ¹æÇâÀ» °áÁ¤ÇÒ Target ÀÇ Transform À» ¹Ş¾Æ¿Â´Ù
-     * @param direction : ¹Ù¶óº¼ ¹æÇâÀ» ¹Ş¾Æ¿Â´Ù
+     * @brief íƒ€ê²Ÿì´ ë°”ë¼ë³´ëŠ” ë°©í–¥ì„ ê¸°ì¤€ìœ¼ë¡œ ì„¼í„°ë¥¼ ì¡ëŠ”ë‹¤
+     * @param target ë°”ë¼ë³´ëŠ” ë°©í–¥ì„ ê²°ì •í•  Target ì˜ Transform ì„ ë°›ì•„ì˜¨ë‹¤
+     * @param direction ë°”ë¼ë³¼ ë°©í–¥ì„ ë°›ì•„ì˜¨ë‹¤
      */
     public static void Recenter(Transform target, Vector3 direction)
     {
         target.forward = target.rotation * direction;
     }
-    #endregion
 
-
-    #region ·¹ÀÌ°¡ ´ê´Â °÷¿¡ Å©·Î½ºÇì¾î¸¦ À§Ä¡½ÃÅ°°í ½Í´Ù
     /**
-     * @brief ·¹ÀÌ°¡ ´ê´Â °÷¿¡ Å©·Î½ºÇì¾î¸¦ À§Ä¡½ÃÅ°´Â ÇÔ¼ö
-     * @param crosshair : ÄÁÆ®·Ñ·¯ÀÇ Á¤¸é¿¡ ±×¸± Å©·Î½ºÇì¾î ¿ÀºêÁ§Æ®ÀÇ Transform À» ¹Ş¾Æ¿Â´Ù
-     * @param isHand : ÄÁÆ®·Ñ·¯°¡ Á¸ÀçÇÏ´ÂÁö ¿©ºÎ¸¦ ¹Ş¾Æ¿Â´Ù
-     * @param hand : 
+     * @brief ë ˆì´ê°€ ë‹¿ëŠ” ê³³ì— í¬ë¡œìŠ¤í—¤ì–´ë¥¼ ìœ„ì¹˜ì‹œí‚¤ëŠ” í•¨ìˆ˜
+     * @param crosshair ì»¨íŠ¸ë¡¤ëŸ¬ì˜ ì •ë©´ì— ê·¸ë¦´ í¬ë¡œìŠ¤í—¤ì–´ ì˜¤ë¸Œì íŠ¸ì˜ Transform ì„ ë°›ì•„ì˜¨ë‹¤
+     * @param isHand ì»¨íŠ¸ë¡¤ëŸ¬ê°€ ì¡´ì¬í•˜ëŠ”ì§€ ì—¬ë¶€ë¥¼ ë°›ì•„ì˜¨ë‹¤
+     * @param hand 
      */
     public static void DrawCrosshair(Transform crosshair, bool isHand = true,
-        Controller hand = Controller.RTouch) 
+        Controller hand = Controller.RTouch)
     {
         Ray ray;
-        // ÄÁÆ®·Ñ·¯ÀÇ À§Ä¡¿Í ¹æÇâÀ» ÀÌ¿ëÇØ ·¹ÀÌ¸¦ Á¦ÀÛÇÑ´Ù
-        if (isHand) 
+        // ì»¨íŠ¸ë¡¤ëŸ¬ì˜ ìœ„ì¹˜ì™€ ë°©í–¥ì„ ì´ìš©í•´ ë ˆì´ë¥¼ ì œì‘í•œë‹¤
+        if (isHand)
         {
-#if BUILD_PLATFORM_PC || UNITY_STANDALONE // #if ´Â && || ¿¬»ê °¡´É
+#if BUILD_PLATFORM_PC 
             ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+#elif TARGET_DEVICE_OCULUS
+            if (hand == Controller.RTouch)
+            {
+                ray = new Ray(RHandPosition, RHandDirection);
+            }       // if: ì˜¤ë¥¸ìª½ ì»¨íŠ¸ë¡¤ëŸ¬ì—ì„œ ë ˆì´ ë°œì‚¬
+            else
+            {
+                ray = new Ray(LHandPosition, LHandDirection);
+            }       // else: ì™¼ìª½ ì»¨íŠ¸ë¡¤ëŸ¬ì—ì„œ ë ˆì´ ë°œì‚¬
 #endif
         }
-        else 
+        else
         {
-            // Ä«¸Ş¶ó¸¦ ±âÁØÀ¸·Î È­¸éÀÇ Á¤Áß¾ÓÀ¸·Î ·¹ÀÌ¸¦ ½ğ´Ù
+            // ì¹´ë©”ë¼ë¥¼ ê¸°ì¤€ìœ¼ë¡œ í™”ë©´ì˜ ì •ì¤‘ì•™ìœ¼ë¡œ ë ˆì´ë¥¼ ìœë‹¤
             ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
         }
 
-        // ´«¿¡ ¾Èº¸ÀÌ´Â Plane À» ¸¸µç´Ù
+        // ëˆˆì— ì•ˆë³´ì´ëŠ” Plane ì„ ë§Œë“ ë‹¤
         Plane plane = new Plane(Vector3.up, 0);
         float distance = 0;
-        // Plane À» ÀÌ¿ëÇØ ray ¸¦ ½ğ´Ù
+        // Plane ì„ ì´ìš©í•´ ray ë¥¼ ìœë‹¤
 
-        // ·¹ÀÌ¿¡ Ãæµ¹ÇÑ ÁöÁ¡ÀÌ ÀÖ´Â °æ¿ì
-        if (plane.Raycast(ray, out distance)) 
+        // ë ˆì´ì— ì¶©ëŒí•œ ì§€ì ì´ ìˆëŠ” ê²½ìš°
+        if (plane.Raycast(ray, out distance))
         {
-            // ·¹ÀÌÀÇ GetPoint ÇÔ¼ö¸¦ ÀÌ¿ëÇØ¼­ Ãæµ¹ ÁöÁ¡ÀÇ À§Ä¡¸¦ °¡Á®¿Â´Ù
+            // ë ˆì´ì˜ GetPoint í•¨ìˆ˜ë¥¼ ì´ìš©í•´ì„œ ì¶©ëŒ ì§€ì ì˜ ìœ„ì¹˜ë¥¼ ê°€ì ¸ì˜¨ë‹¤
             crosshair.position = ray.GetPoint(distance);
             crosshair.forward = -Camera.main.transform.forward;
-            // Å©·Î½ºÇì¾îÀÇ Å©±â¸¦ ÃÖ¼Ò ±âº» Å©±â¿¡¼­ °Å¸®¿¡ µû¶ó ´õ Ä¿Áöµµ·Ï ÇÑ´Ù
+            // í¬ë¡œìŠ¤í—¤ì–´ì˜ í¬ê¸°ë¥¼ ìµœì†Œ ê¸°ë³¸ í¬ê¸°ì—ì„œ ê±°ë¦¬ì— ë”°ë¼ ë” ì»¤ì§€ë„ë¡ í•œë‹¤
             crosshair.localScale = originalScale * Mathf.Max(1.0f, distance);
         }
-        // ¾ø´Â °æ¿ì
-        else 
+        // ì—†ëŠ” ê²½ìš°
+        else
         {
             crosshair.position = ray.origin + ray.direction * 100.0f;
             crosshair.forward = -Camera.main.transform.forward;
@@ -371,18 +362,49 @@ public static class ARAVR_Input
             crosshair.localScale = originalScale * Mathf.Max(1.0f, distance);
         }
     }
-    #endregion
 
-
-    #region TrackingSpace ÀÇ Transform À» ¸®ÅÏÇÏ´Â ÇÔ¼ö
     /**
-     * @brief TrackingSpace ÀÇ Transform À» ¸®ÅÏÇÏ´Â ÇÔ¼ö
-     * @return TrackingSpace ÀÇ Transform 
+     * @brief ì»¨íŠ¸ë¡¤ëŸ¬ì˜ ì§„ë™ì„ ì‹¤í–‰í•˜ëŠ” í•¨ìˆ˜
+     * @see PlayVibration() 
+     */
+    public static void PlayVibration(Controller hand)
+    {
+#if TARGET_DEVICE_OCULUS
+        PlayVibration(0.06f, 1f, 1f, hand);
+#endif
+    }
+
+    /**
+     * @brief ì»¨íŠ¸ë¡¤ëŸ¬ì˜ ì§„ë™ì„ ì‹¤í–‰í•˜ëŠ” í•¨ìˆ˜
+     * @param duration ì–¼ë§ˆë‚˜ ì˜¤ë˜ ì§„ë™í•  ê²ƒì¸ì§€ ë°›ì•„ì˜¨ë‹¤
+     * @param frequency ì–¼ë§ˆë‚˜ ë¹ ë¥´ê²Œ ì§„ë™í•  ê²ƒì¸ì§€ ë°›ì•„ì˜¨ë‹¤
+     * @param amplitude ì–¼ë§ˆë‚˜ ì„¸ê²Œ ì§„ë™í•  ê²ƒì¸ì§€ ë°›ì•„ì˜¨ë‹¤
+     * @param hand ì–´ëŠìª½ ì»¨íŠ¸ë¡¤ëŸ¬ë¥¼ ì§„ë™í•  ê²ƒì¸ì§€ ë°›ì•„ì˜¨ë‹¤
+     * @see VibrationCoroutine() 
+     */
+    public static void PlayVibration(float duration, float frequency, float amplitude, Controller hand)
+    {
+#if TARGET_DEVICE_OCULUS
+        if (CoroutineInstance.coroutineInstance == null)
+        {
+            GameObject coroutineObj = new GameObject("CoroutineInstance");
+            coroutineObj.AddComponent<CoroutineInstance>();
+        }       // if: ì‹±ê¸€í„´ ì½”ë£¨í‹´ ì¸ìŠ¤í„´ìŠ¤ì˜ ë„ ì²´í¬ ìœ„ì¹˜ ì—¬ê¸° ë§ìŒ?
+
+        // ì´ë¯¸ í”Œë ˆì´ì¤‘ì¸ ì§„ë™ ì½”ë£¨í‹´ì€ ì •ì§€
+        CoroutineInstance.coroutineInstance.StopAllCoroutines();
+        CoroutineInstance.coroutineInstance.StartCoroutine(VibrationCoroutine(duration, frequency, amplitude, hand));
+#endif
+    }
+
+    /**
+     * @brief TrackingSpace ì˜ Transform ì„ ë¦¬í„´í•˜ëŠ” í•¨ìˆ˜
+     * @return TrackingSpace ì˜ Transform 
      */
 #if TARGET_DEVICE_OCULUS
-    private static Transform GetTransform() 
+    private static Transform GetTransform()
     {
-        if (rootTransform == null) 
+        if (rootTransform == null)
         {
             rootTransform = GameObject.Find("TrackingSpace").transform;
         }
@@ -390,6 +412,44 @@ public static class ARAVR_Input
         return rootTransform;
     }
 #endif
-#endregion
-}
 
+    /**
+     * @brief ì»¨íŠ¸ë¡¤ëŸ¬ì˜ ì§„ë™ê¸°ëŠ¥ì„ êµ¬í˜„í•˜ê¸° ìœ„í•œ ì½”ë£¨í‹´
+     * @param duration ì–¼ë§ˆë‚˜ ì˜¤ë˜ ì§„ë™í•  ê²ƒì¸ì§€ ë°›ì•„ì˜¨ë‹¤
+     * @param frequency ì–¼ë§ˆë‚˜ ë¹ ë¥´ê²Œ ì§„ë™í•  ê²ƒì¸ì§€ ë°›ì•„ì˜¨ë‹¤
+     * @param amplitude ì–¼ë§ˆë‚˜ ì„¸ê²Œ ì§„ë™í•  ê²ƒì¸ì§€ ë°›ì•„ì˜¨ë‹¤
+     * @param hand ì–´ëŠìª½ ì»¨íŠ¸ë¡¤ëŸ¬ë¥¼ ì§„ë™í•  ê²ƒì¸ì§€ ë°›ì•„ì˜¨ë‹¤
+     */
+    private static IEnumerator VibrationCoroutine(float duration, float frequency, float amplitude, Controller hand)
+    {
+        float currentTime = 0f;
+
+        while (currentTime < duration)
+        {
+            currentTime += Time.deltaTime;
+            OVRInput.SetControllerVibration(frequency, amplitude, (OVRInput.Controller)hand);
+
+            yield return null;
+        }       // loop: duration ë§Œí¼ ë°˜ë³µ
+
+        // ì§„ë™ ì‹œê°„ì´ ì§€ë‚˜ë©´ ì§„ë™ì„ ë©ˆì¶”ëŠ” ë¡œì§
+        OVRInput.SetControllerVibration(0, 0, (OVRInput.Controller)hand);
+    }
+}       // class ARAVR_Input
+
+//! ARAVRInput í´ë˜ìŠ¤ì—ì„œ ì‚¬ìš©í•  ì½”ë£¨í‹´ ê°ì²´
+public class CoroutineInstance : MonoBehaviour
+{
+    public static CoroutineInstance coroutineInstance = null;   /**< ARAVRInput  ê¸°ëŠ¥ì„ ì‚¬ìš©í•˜ëŠ” ë™ì•ˆ ë©”ëª¨ë¦¬ì— ì¸ìŠ¤í„´ìŠ¤í™” í•  ì½”ë£¨í‹´ ê°ì²´ ë³€ìˆ˜  */
+
+    //! ì‹±ê¸€í„´ íŒ¨í„´ìœ¼ë¡œ ì½”ë£¨í‹´ ê°ì²´ë¥¼ ìƒì„±
+    private void Awake()
+    {
+        if (coroutineInstance == null)
+        {
+            coroutineInstance = this;
+        }
+
+        DontDestroyOnLoad(gameObject);
+    }       // Awake()
+}       // class CoroutineInstance
