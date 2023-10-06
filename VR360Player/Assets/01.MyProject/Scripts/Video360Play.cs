@@ -80,4 +80,16 @@ public class Video360Play : MonoBehaviour
         videoPlayer.Play();
         currentVcIdx = setVcIdx;
     }
+
+    public void SetVideoPlay(int num)
+    {
+        // 현재 재생중인 번호가 전달받은 번호와 다를 때만 실행
+        if(currentVcIdx != num)
+        {
+            videoPlayer.Stop();
+            videoPlayer.clip = vcList[num];
+            currentVcIdx = num;
+            videoPlayer.Play();
+        }
+    }
 }

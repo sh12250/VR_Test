@@ -37,7 +37,21 @@ public class VideoFrame : MonoBehaviour
                 videoPlayer.Play();
             }       // else: 정지중
         }
+    }
 
-
+    //! GazePointerCtrl에서 영상 재생을 컨트롤하기 위한 함수
+    public void CheckVideoFrame(bool checker)
+    {
+        if (checker)
+        {
+            if (!videoPlayer.isPlaying)
+            {
+                videoPlayer.Play();
+            }
+        }
+        else
+        {
+            videoPlayer.Stop();
+        }
     }
 }
